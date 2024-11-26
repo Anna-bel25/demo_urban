@@ -69,12 +69,8 @@ class VisitService {
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = jsonDecode(response.body);
 
-        if (jsonData is List) {
-          return jsonData.map((visit) => CreateVisitModel.fromJson(visit)).toList();
-        } else {
-          return [];
-        }
-      } else {
+        return jsonData.map((visit) => CreateVisitModel.fromJson(visit)).toList();
+            } else {
         return [];
       }
     } catch (error) {
