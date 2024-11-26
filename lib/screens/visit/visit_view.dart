@@ -77,7 +77,7 @@ class _VisitViewPageState extends State<VisitViewPage> {
     );
   }
 
-  // Función para formatear la fecha
+  // Funcion para formatear la fecha
   String _formatearFecha(String fechaHora) {
     try {
       DateTime dateTime = DateTime.parse(fechaHora);
@@ -87,7 +87,7 @@ class _VisitViewPageState extends State<VisitViewPage> {
     }
   }
 
-  // Función para formatear la hora
+  // Funcion para formatear la hora
   String _formatearHora(String fechaHora) {
     try {
       DateTime dateTime = DateTime.parse(fechaHora);
@@ -255,7 +255,6 @@ class _VisitViewPageState extends State<VisitViewPage> {
           actions: [
             TextButton(
               onPressed: () {
-                // Lógica de eliminación aquí
                 Navigator.of(context).pop();
               },
               child: const Text('Eliminar'),
@@ -274,7 +273,7 @@ class _VisitViewPageState extends State<VisitViewPage> {
 
   void _showEditModal(BuildContext context, CreateVisitModel visita) {
     final fechaController = TextEditingController(text: visita.fechaVisita);
-    final medioIngresoController = TextEditingController(text: visita.medioIngreso.name);
+    //final medioIngresoController = TextEditingController(text: visita.medioIngreso.name);
     MedioIngreso selectedMedioIngreso = visita.medioIngreso;
     DateTime selectedDate = DateTime.parse(visita.fechaVisita);
     TimeOfDay selectedTime = TimeOfDay.fromDateTime(selectedDate);
@@ -310,7 +309,7 @@ class _VisitViewPageState extends State<VisitViewPage> {
                         labelText: 'Fecha y Hora',
                         hintText: 'Seleccione una fecha y hora',
                       ),
-                      readOnly: true, // No permitir edición manual
+                      readOnly: true, // No edicion manual
                       onTap: () async {
                         final pickedDate = await showDatePicker(
                           context: context,
@@ -334,7 +333,7 @@ class _VisitViewPageState extends State<VisitViewPage> {
                               pickedTime.minute,
                             );
                             setState(() {
-                              selectedTime = pickedTime; // Actualizar la hora
+                              selectedTime = pickedTime;
                               fechaController.text = DateFormat('dd-MM-yyyy H:mm:ss').format(selectedDate);
                             });
                           }
@@ -366,7 +365,6 @@ class _VisitViewPageState extends State<VisitViewPage> {
                         onPressed: () {
                           visita.fechaVisita = fechaController.text;
                           visita.medioIngreso = selectedMedioIngreso;
-                          // Lógica para guardar cambios
                           Navigator.of(context).pop();
                         },
                         child: const Text('Guardar'),

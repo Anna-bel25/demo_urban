@@ -53,7 +53,8 @@ class ResidentService {
     final token = userData?['token'] ?? '';
 
     if (cedulaResidente.isEmpty || token.isEmpty) {
-        throw Exception('Cédula o token no disponibles');
+      return [];
+      //throw Exception('Cédula o token no disponibles');
     }
 
     final url = Uri.parse('$_baseUrl/all?cedula=$cedulaResidente');
@@ -66,14 +67,15 @@ class ResidentService {
       final response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        final List<dynamic> responseData = jsonDecode(response.body);
-        print('Respuesta de la API: $responseData');
-        return responseData.map((item) => CreateResidentModel.fromJson(item)).toList();
-      } else if (response.statusCode == 404) {
-        throw Exception('No hay registros de solicitudes de visita disponibles para este usuario.');
+        final List<dynamic> jsonData = jsonDecode(response.body);
         
+        if (jsonData is List) {
+          return jsonData.map((visit) => CreateResidentModel.fromJson(visit)).toList();
+        } else {
+          return [];
+        }
       } else {
-        throw Exception('Error al obtener registros de solicitudes de visita. Código: ${response.statusCode}');
+        return [];
       }
     } catch (error) {
       print('Error al obtener registros de solicitudes de visita: $error');

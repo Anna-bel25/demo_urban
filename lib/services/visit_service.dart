@@ -54,7 +54,7 @@ class VisitService {
     final token = userData?['token'] ?? '';
 
     if (cedulaVisitante.isEmpty || token.isEmpty) {
-        throw Exception('Cédula o token no disponibles');
+      return [];
     }
 
     final url = Uri.parse('$_baseUrl/all?cedula=$cedulaVisitante');
@@ -68,13 +68,18 @@ class VisitService {
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = jsonDecode(response.body);
-        return jsonData.map((visit) => CreateVisitModel.fromJson(visit)).toList();
+
+        if (jsonData is List) {
+          return jsonData.map((visit) => CreateVisitModel.fromJson(visit)).toList();
+        } else {
+          return [];
+        }
       } else {
-        throw Exception('Error al obtener las solicitudes de visita: ${response.body}');
+        return [];
       }
     } catch (error) {
       print('Error al obtener las solicitudes de visita: $error');
-      throw Exception('Error al obtener las solicitudes de visita: $error');
+      return [];
     }
   }
 

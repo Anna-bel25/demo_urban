@@ -267,7 +267,7 @@ class _ResidentViewPageState extends State<ResidentViewPage> {
 
   void _showEditModal(BuildContext context, CreateResidentModel registro) {
     final fechaController = TextEditingController(text: registro.fechaVisita);
-    final medioIngresoController = TextEditingController(text: registro.medioIngreso.name);
+    ///final medioIngresoController = TextEditingController(text: registro.medioIngreso.name);
     MedioIngreso selectedMedioIngreso = registro.medioIngreso;
     String selectedEstado = registro.estadoSolicitud?.name ?? EstadoSolicitud.Ingresada.name;
     DateTime selectedDate = DateTime.parse(registro.fechaVisita);
@@ -384,12 +384,12 @@ class _ResidentViewPageState extends State<ResidentViewPage> {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              if (selectedEstado != null) {
-                                final nuevoEstado = EstadoSolicitud.values.byName(selectedEstado);
-                                final updatedRegistro = registro.updateEstadoSolicitud(nuevoEstado);
+                              //if (selectedEstado != null) {
+                                //final nuevoEstado = EstadoSolicitud.values.byName(selectedEstado);
+                                //final updatedRegistro = registro.updateEstadoSolicitud(nuevoEstado);
 
                                 Navigator.of(context).pop();
-                              }
+                              //}
                             },
                             child: const Text('Guardar'),
                           ),
