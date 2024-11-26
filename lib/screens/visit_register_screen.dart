@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../main.dart';
 import '../models/visit_model.dart';
 import '../services/visit_service.dart';
+import 'register_screen.dart';
 import 'visit_view_screen.dart';
 
 
@@ -64,12 +66,9 @@ class _VisitRegisterPageState extends State<VisitRegisterPage> {
   String medioIngreso = "", estado = "";
   DateTime? fechaVisita;
   String? imagenBase64;
-  
-  
 
   String? validarFormulario(String? value, String campo) {
     if (value == null || value.isEmpty) return 'Este campo es requerido!';
-
     final reglas = {
       'cedulaResidente': () => value.length != 10 ? 'La cédula debe tener 10 dígitos' : null,
       'cedulaVisitante': () => value.length != 10 ? 'La cédula debe tener 10 dígitos' : null,
@@ -78,44 +77,34 @@ class _VisitRegisterPageState extends State<VisitRegisterPage> {
       'medioIngreso': () => value.isEmpty ? 'Debe seleccionar un medio de ingreso' : null,
       'estado': () => value.isEmpty ? 'Debe seleccionar un estado' : null,
     };
-
     return reglas[campo]?.call();
   }
-  
-
 
   Future<void> _seleccionarImagen() async {
     final XFile? imagen = await _picker.pickImage(source: ImageSource.gallery);
-
     if (imagen != null) {
-      // Convertimos la imagen a base64
       File imagenFile = File(imagen.path);
       List<int> imagenBytes = await imagenFile.readAsBytes();
       setState(() {
-        imagenBase64 = base64Encode(imagenBytes);  // Guardamos la imagen en base64
+        imagenBase64 = base64Encode(imagenBytes);
       });
     }
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
-    // Seleccionar fecha
     final DateTime? selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-
     if (selectedDate != null && selectedDate != fechaVisita) {
-      // Seleccionar hora
       final TimeOfDay? selectedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(DateTime.now()),
       );
-
       if (selectedTime != null) {
         setState(() {
-          // Combinar fecha y hora
           fechaVisita = DateTime(
             selectedDate.year,
             selectedDate.month,
@@ -129,69 +118,85 @@ class _VisitRegisterPageState extends State<VisitRegisterPage> {
   }
 
   Future<void> _handleRegister() async {
-  if (_formKey.currentState!.validate()) {
-    _formKey.currentState!.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
 
-    final visitData = CreateVisitModel(
-      nombreVisitante: nombreVisitante,
-      apellidoVisitante: apellidoVisitante,
-      cedulaVisitante: cedulaVisitante,
-      cedulaResidente: cedulaResidente,
-      manzanaVilla: manzanaVilla,
-      fechaVisita: DateFormat('yyyy-MM-dd HH:mm').format(fechaVisita!),
-      medioIngreso: MedioIngreso.values.firstWhere(
-        (e) => e.name == medioIngreso,
-        orElse: () => MedioIngreso.Caminando,
-      ),
-      estadoSolicitud: EstadoSolicitud.values.firstWhere(
-        (e) => e.name == estado,
-        orElse: () => EstadoSolicitud.Ingresada,
-      ),
-      fotoPlaca: imagenBase64,
-    );
-
-    final visitService = VisitService();
-    try {
-      final response = await visitService.registerVisitor(visitData);
-
-      if (response['success']) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Visita registrada exitosamente')),
-        );
-        // Navigator.pop(context);
-      } else {
-        throw Exception(response['message'] ?? 'Error desconocido');
-      }
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $error')),
+      final visitData = CreateVisitModel(
+        nombreVisitante: nombreVisitante,
+        apellidoVisitante: apellidoVisitante,
+        cedulaVisitante: cedulaVisitante,
+        cedulaResidente: cedulaResidente,
+        manzanaVilla: manzanaVilla,
+        fechaVisita: fechaVisita != null
+            ? DateFormat('yyyy-MM-ddTHH:mm:ss').format(fechaVisita!)
+            : '',
+        medioIngreso: MedioIngreso.values.firstWhere(
+          (e) => e.name == medioIngreso,
+          orElse: () => MedioIngreso.Caminando,
+        ),
+        estadoSolicitud: EstadoSolicitud.Ingresada,
+        fotoPlaca: imagenBase64,
       );
+
+      final visitService = VisitService();
+      try {
+        final response = await visitService.registerVisitor(visitData);
+        if (response['success']) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Visita registrada exitosamente')),
+          );
+          Navigator.pop(context);
+        } else {
+          throw Exception(response['message'] ?? 'Error desconocido');
+        }
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $error')),
+        );
+      }
     }
   }
-}
 
-  
+
   void _resetForm() {
+    setState(() {
+      nombreVisitante = "";
+      apellidoVisitante = "";
+      cedulaResidente = "";
+      cedulaVisitante = "";
+      manzanaVilla = "";
+      medioIngreso = "";
+      estado = "";
+      fechaVisita = null;
+      imagenBase64 = null;
+    });
     _formKey.currentState?.reset();
   }
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         //backgroundColor: Color.fromARGB(185, 218, 224, 232),
-        title: Text(widget.title),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginForm()),
-            );
-          },
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const RegisterForm()),
+              ),
+            ),
+            Text(widget.title),
+            IconButton(
+              icon: const Icon(Icons.exit_to_app),
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const MyApp()),
+              ),
+            ),
+          ],
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -227,7 +232,7 @@ class _VisitRegisterPageState extends State<VisitRegisterPage> {
           },
         ),
         const SizedBox(height: 16),
-        
+
         // Apellido
         TextFormField(
           decoration: const InputDecoration(
@@ -302,8 +307,7 @@ class _VisitRegisterPageState extends State<VisitRegisterPage> {
                     : DateFormat('yyyy-MM-dd HH:mm').format(fechaVisita!),
               ),
               validator: (value) => validarFormulario(value, 'fechaVisita'),
-              onSaved: (String? value) {
-              },
+              onSaved: (String? value) {},
             ),
           ),
         ),
@@ -320,7 +324,7 @@ class _VisitRegisterPageState extends State<VisitRegisterPage> {
           isExpanded: true,
           items: const [
             DropdownMenuItem(value: "Vehiculo", child: Text("Vehículo")),
-            DropdownMenuItem(value: "Caminando", child: Text("Caminando")),
+            DropdownMenuItem(value: "Caminando", child: Text("Caminando ")),
           ],
           onChanged: (String? newValue) {
             setState(() {
@@ -334,7 +338,7 @@ class _VisitRegisterPageState extends State<VisitRegisterPage> {
         ),
         const SizedBox(height: 16),
 
-        // Si el medio de ingreso es Vehículo, habilitamos la opción para subir la imagen
+        // Si el medio de ingreso es Vehículo
         if (medioIngreso == 'Vehiculo') ...[
           ElevatedButton(
             onPressed: _seleccionarImagen,
@@ -353,8 +357,8 @@ class _VisitRegisterPageState extends State<VisitRegisterPage> {
                 ),
               ],
             ),
-          ],
         ],
+      ],
     );
   }
 

@@ -1,54 +1,38 @@
-class UserSessionService {
-  static String? token;
-  static String? numeroCedula;
-  static String? nombre;
-  static String? apellido;
-  static String? role;
-  static List<String>? biometria;
+// import 'databse_service.dart';
 
-  // Función para almacenar la sesión del usuario
-  static void setSession(String newToken, String newNumeroCedula, String nombre, String apellido, String newRole, List<String>? newBiometria) {
-    token = newToken;
-    numeroCedula = newNumeroCedula;
-    nombre = nombre;
-    apellido = apellido;
-    role = newRole;
-    biometria = newBiometria;
-  }
+// class UserSessionService {
+//   static Future<void> checkUserSession() async {
+//     final userData = await DatabaseAuth.getUser();
+//     if (userData != null) {
+//       final token = userData['token'];
+//       final role = userData['role'];
+//       final cedula = userData['cedula'];
+//       final nombre = userData['nombre'];
+//       final apellido = userData['apellido'];
 
-  static Map<String, dynamic> getSesion() {
-    return {
-      'token': token,
-      'numeroCedula': numeroCedula,
-      'nombre': nombre,
-      'apellido': apellido,
-      'role': role,
-      'biometria': biometria,
-    };
-  }
+//       print('Token: $token');
+//       print('Rol: $role');
+//       print('Cédula: $cedula');
+//       print('Nombre: $nombre');
+//       print('Apellido: $apellido');
+//     } else {
+//       print('No se encontró sesión de usuario.');
+//     }
+//   }
 
-  // Funciones para obtener los datos de la sesión
-  static String? getToken() {
-    return token;
-  }
+//   static Future<void> setSession(String token, String cedula, String role, String nombre, String apellido) async {
+//     await DatabaseAuth.saveUser(token, role, cedula, nombre, apellido);
+//     print('Sesión iniciada con token: $token');
+//   }
 
-  static String? getNumeroCedula() {
-    return numeroCedula;
-  }
+//   static Future<String?> getToken() async {
+//     final userData = await DatabaseAuth.getUser();
+//     return userData?['token'];
+//   }
 
-  static String? getNombre() {
-    return nombre;
-  }
-
-  static String? getApellido() {
-    return apellido;
-  }
-
-  static String? getRole() {
-    return role;
-  }
-
-  static List<String>? getBiometria() {
-    return biometria;
-  }
-}
+//   static Future<void> clearSession() async {
+//     final db = await DatabaseAuth.database;
+//     await db.delete('user');
+//     print('Sesión cerrada');
+//   }
+// }

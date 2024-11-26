@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:demo_urban/services/databse_service.dart';
 import 'package:http/http.dart' as http;
 import '../models/resident_model.dart';
-import 'user_sesion_service.dart';
 
 class ResidentService {
   final String _baseUrl = 'http://192.168.100.8:3000/resident';
@@ -9,16 +9,19 @@ class ResidentService {
 
   // Crear registro de visita
   Future<Map<String, dynamic>> registerVisitor(CreateResidentModel visitData) async {
-  final token = UserSessionService.getToken();
-  if (token == null) {
-    throw Exception('No se encontró el token');
-  }
+    final userData = await DatabaseAuth.getUser ();
+    final cedulaResidente = userData?['cedula'] ?? '';
+    final token = userData?['token'] ?? '';
 
-  final url = Uri.parse('$_baseUrl/visit');
-  final headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer $token',
-  };
+    if (cedulaResidente.isEmpty || token.isEmpty) {
+        throw Exception('Cédula o token no disponibles');
+    }
+
+    final url = Uri.parse('$_baseUrl/post?cedula=$cedulaResidente');
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
 
   try {
     final response = await http.post(
@@ -44,13 +47,16 @@ class ResidentService {
 
 
   // Obtener registro de visita
-  Future<List<CreateResidentModel>> getVisitRequests() async {
-    final token = UserSessionService.getToken();
-    if (token == null) {
-      throw Exception('No se encontró el token');
+  Future<List<CreateResidentModel>> getResidentRequests() async {
+    final userData = await DatabaseAuth.getUser ();
+    final cedulaResidente = userData?['cedula'] ?? '';
+    final token = userData?['token'] ?? '';
+
+    if (cedulaResidente.isEmpty || token.isEmpty) {
+        throw Exception('Cédula o token no disponibles');
     }
 
-    final url = Uri.parse('$_baseUrl/visits');
+    final url = Uri.parse('$_baseUrl/all?cedula=$cedulaResidente');
     final headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -58,16 +64,20 @@ class ResidentService {
 
     try {
       final response = await http.get(url, headers: headers);
+
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body);
         print('Respuesta de la API: $responseData');
         return responseData.map((item) => CreateResidentModel.fromJson(item)).toList();
+      } else if (response.statusCode == 404) {
+        throw Exception('No hay registros de solicitudes de visita disponibles para este usuario.');
+        
       } else {
-        throw Exception('Error al obtener solicitudes de visita');
+        throw Exception('Error al obtener registros de solicitudes de visita. Código: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error al obtener solicitudes de visita: $error');
-      throw Exception('Hubo un error al obtener las solicitudes de visita');
+      print('Error al obtener registros de solicitudes de visita: $error');
+      throw Exception('Hubo un error al obtener registros de las solicitudes de visita');
     }
   }
 

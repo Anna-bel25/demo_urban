@@ -1,16 +1,16 @@
 enum MedioIngreso { Vehiculo, Caminando }
-enum EstadoSolicitud { Ingresada, Aceptada, Rechazada }
+enum EstadoSolicitud { Ingresada, Aprobada, Rechazada }
 
 class CreateVisitModel {
-  final String nombreVisitante;
-  final String apellidoVisitante;
-  final String cedulaVisitante;
-  final String cedulaResidente;
-  final String manzanaVilla;
-  final String fechaVisita;
-  final MedioIngreso medioIngreso;
-  final EstadoSolicitud estadoSolicitud;
-  final String? fotoPlaca;
+  String nombreVisitante;
+  String apellidoVisitante;
+  String cedulaVisitante;
+  String cedulaResidente;
+  String manzanaVilla;
+  String fechaVisita;
+  MedioIngreso medioIngreso;
+  EstadoSolicitud? estadoSolicitud;
+  String? fotoPlaca;
 
   CreateVisitModel({
     required this.nombreVisitante,
@@ -20,7 +20,7 @@ class CreateVisitModel {
     required this.manzanaVilla,
     required this.fechaVisita,
     required this.medioIngreso,
-    required this.estadoSolicitud,
+    this.estadoSolicitud,
     this.fotoPlaca,
   });
 
@@ -33,11 +33,12 @@ class CreateVisitModel {
       manzanaVilla: json['ManzanaVilla'] as String? ?? '',
       fechaVisita: json['FechaVisita'] as String? ?? '',
       medioIngreso: MedioIngreso.values.byName(json['MedioIngreso'] ?? 'Caminando'),
-      estadoSolicitud: EstadoSolicitud.values.byName(json['Estado'] ?? 'Ingresada'),
+      estadoSolicitud: json['EstadoSolicitud'] != null 
+          ? EstadoSolicitud.values.byName(json['EstadoSolicitud']) 
+          : null,
       fotoPlaca: json['FotoPlaca'] as String?,
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -48,8 +49,8 @@ class CreateVisitModel {
       'ManzanaVilla': manzanaVilla,
       'FechaVisita': fechaVisita,
       'MedioIngreso': medioIngreso.name,
-      'EstadoSolicitud': estadoSolicitud.name,
-      if (fotoPlaca != null) 'fotoPlaca': fotoPlaca,
+      'EstadoSolicitud': estadoSolicitud?.name,
+      if (fotoPlaca != null) 'FotoPlaca': fotoPlaca,
     };
   }
 }

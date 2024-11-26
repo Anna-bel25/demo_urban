@@ -2,6 +2,7 @@ import 'package:demo_urban/screens/login_screen.dart';
 import 'package:demo_urban/services/user_service.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
 import '../models/register_model.dart';
 
 class RegisterForm extends StatelessWidget {
@@ -169,18 +170,33 @@ class _RegisterPageState extends State<RegisterPage> {
       children: [
         const SizedBox(height: 15),
         Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-          children: [
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
             IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginForm()),
-                );
-              },
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const LoginForm()),
+              ),
+            ),
+            Text(widget.title),
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const MyApp()),
+              ),
             ),
           ],
+          // children: [
+          //   IconButton(
+          //     icon: const Icon(Icons.arrow_back),
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => const LoginForm()),
+          //       );
+          //     },
+          //   ),
+          // ],
         ),
         const Text(
           'Registro',

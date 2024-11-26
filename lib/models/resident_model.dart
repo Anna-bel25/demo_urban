@@ -1,15 +1,15 @@
 enum MedioIngreso { Vehiculo, Caminando }
-enum EstadoRegistro { Registrada, Completada, Cancelada }
+enum EstadoSolicitud { Ingresada, Aceptada, Rechazada }
 
 class CreateResidentModel {
-  final String nombreVisitante;
-  final String apellidoVisitante;
-  final String cedulaVisitante;
-  final String cedulaResidente;
-  final String manzanaVilla;
-  final String fechaVisita;
-  final MedioIngreso medioIngreso;
-  final EstadoRegistro estadoRegistro;
+  String nombreVisitante;
+  String apellidoVisitante;
+  String cedulaVisitante;
+  String cedulaResidente;
+  String manzanaVilla;
+  String fechaVisita;
+  MedioIngreso medioIngreso;
+  EstadoSolicitud? estadoSolicitud;
 
   CreateResidentModel({
     required this.nombreVisitante,
@@ -19,7 +19,7 @@ class CreateResidentModel {
     required this.manzanaVilla,
     required this.fechaVisita,
     required this.medioIngreso,
-    required this.estadoRegistro,
+    this.estadoSolicitud,
   });
 
   factory CreateResidentModel.fromJson(Map<String, dynamic> json) {
@@ -31,10 +31,11 @@ class CreateResidentModel {
       manzanaVilla: json['ManzanaVilla'] as String? ?? '',
       fechaVisita: json['FechaVisita'] as String? ?? '',
       medioIngreso: MedioIngreso.values.byName(json['MedioIngreso'] ?? 'Caminando'),
-      estadoRegistro: EstadoRegistro.values.byName(json['Estado'] ?? 'Ingresada'),
+      estadoSolicitud: json['EstadoSolicitud'] != null 
+          ? EstadoSolicitud.values.byName(json['EstadoSolicitud']) 
+          : null,
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -45,7 +46,20 @@ class CreateResidentModel {
       'ManzanaVilla': manzanaVilla,
       'FechaVisita': fechaVisita,
       'MedioIngreso': medioIngreso.name,
-      'EstadoRegistro': estadoRegistro.name,
+      'EstadoSolicitud': estadoSolicitud?.name,
     };
+  }
+
+  CreateResidentModel updateEstadoSolicitud(EstadoSolicitud newEstado) {
+    return CreateResidentModel(
+      nombreVisitante: this.nombreVisitante,
+      apellidoVisitante: this.apellidoVisitante,
+      cedulaVisitante: this.cedulaVisitante,
+      cedulaResidente: this.cedulaResidente,
+      manzanaVilla: this.manzanaVilla,
+      fechaVisita: this.fechaVisita,
+      medioIngreso: this.medioIngreso,
+      estadoSolicitud: newEstado,
+    );
   }
 }

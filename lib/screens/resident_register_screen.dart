@@ -3,6 +3,9 @@ import 'package:demo_urban/screens/resident_view_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../main.dart';
+import 'register_screen.dart';
+
 
 class ResidentRegisterScreen extends StatelessWidget {
   const ResidentRegisterScreen({super.key});
@@ -103,23 +106,44 @@ class _ResidentRegisterPageState extends State<ResidentRegisterPage> {
   }
 
 
+  void _resetForm() {
+    setState(() {
+      nombreVisitante = "";
+      apellidoVisitante = "";
+      cedulaResidente = "";
+      cedulaVisitante = "";
+      manzanaVilla = "";
+      medioIngreso = "";
+      estado = "";
+      fechaVisita = null;
+    });
+    _formKey.currentState?.reset();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         //backgroundColor: Color.fromARGB(185, 218, 224, 232),
-        title: Text(widget.title),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginForm()),
-            );
-          },
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const RegisterForm()),
+              ),
+            ),
+            Text(widget.title),
+            IconButton(
+              icon: const Icon(Icons.exit_to_app),
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const MyApp()),
+              ),
+            ),
+          ],
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -260,26 +284,26 @@ class _ResidentRegisterPageState extends State<ResidentRegisterPage> {
         const SizedBox(height: 16),
 
         // Estado de Registro
-        DropdownButtonFormField<String>(
-          decoration: const InputDecoration(
-            labelText: 'Estado de Registro',
-            icon: Icon(Icons.assignment),
-            border: OutlineInputBorder(),
-          ),
-          value: estado.isEmpty ? null : estado,
-          isExpanded: true,
-          items: const [
-            DropdownMenuItem(value: "Registrada", child: Text("Registrada")),
-            DropdownMenuItem(value: "Completada", child: Text("Completada")),
-            DropdownMenuItem(value: "Cancelada", child: Text("Cancelada")),
-          ],
-          onChanged: (String? newValue) {
-            setState(() {
-              estado = newValue ?? "";
-            });
-          },
-          validator: (value) => validarFormulario(value, 'estado'),
-        ),
+        // DropdownButtonFormField<String>(
+        //   decoration: const InputDecoration(
+        //     labelText: 'Estado de Registro',
+        //     icon: Icon(Icons.assignment),
+        //     border: OutlineInputBorder(),
+        //   ),
+        //   value: estado.isEmpty ? null : estado,
+        //   isExpanded: true,
+        //   items: const [
+        //     DropdownMenuItem(value: "Registrada", child: Text("Registrada")),
+        //     DropdownMenuItem(value: "Completada", child: Text("Completada")),
+        //     DropdownMenuItem(value: "Cancelada", child: Text("Cancelada")),
+        //   ],
+        //   onChanged: (String? newValue) {
+        //     setState(() {
+        //       estado = newValue ?? "";
+        //     });
+        //   },
+        //   validator: (value) => validarFormulario(value, 'estado'),
+        // ),
       ],
     );
   }

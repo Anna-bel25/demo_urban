@@ -3,6 +3,7 @@ import 'package:demo_urban/screens/resident_register_screen.dart';
 import 'package:demo_urban/screens/visit_register_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/login_model.dart';
+import '../services/databse_service.dart';
 import '../services/user_service.dart';
 import 'register_screen.dart';
 
@@ -73,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
       final loginModel = LoginModel(
         numeroCedula: numeroCedula,
         contrasena: contrasena,
-        metodoAutenticacion: 'Tradicional', // Establecer el método de autenticación
+        metodoAutenticacion: 'Tradicional',
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -81,38 +82,38 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       final response = await loginService.login(loginModel);
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-      if (response['success']) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Inicio de sesión exitoso')),
-        );
-
-        // Obtener el rol del usuario
-        final userRole = loginService.userRoles.isNotEmpty ? loginService.userRoles.last : "";
-
-        // Redirigir según el rol
-        if (userRole == 'Residente') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const ResidentRegisterScreen()),
+        if (response['success']) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Inicio de sesión exitoso')),
           );
-        } else if (userRole == 'Visitante') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const VisitRegisterScreen()),
-          );
+
+          final userData = await DatabaseAuth.getUser();
+          final userRole = userData?['role'] ?? '';
+          print('Rol obtenido: $userRole');
+
+          if (userRole == 'Residente') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ResidentRegisterScreen()),
+            );
+          } else if (userRole == 'Visitante') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const VisitRegisterScreen()),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Rol de usuario desconocido')),
+            );
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Rol de usuario desconocido')),
+            SnackBar(content: Text(response['message'])),
           );
         }
 
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response['message'])),
-        );
-      }
 
       _resetForm();
     }
@@ -177,16 +178,20 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         const SizedBox(height: 15),
         Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            // IconButton(
+            //   icon: const Icon(Icons.arrow_back),
+            //   onPressed: () => Navigator.pushReplacement(
+            //     context, MaterialPageRoute(builder: (context) => const LoginForm()),
+            //   ),
+            // ),
+            Text(widget.title),
             IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MyApp()),
-                );
-              },
+              icon: const Icon(Icons.home),
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const MyApp()),
+              ),
             ),
           ],
         ),

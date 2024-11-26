@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //await DatabaseAuth.deleteUserDatabase();
 
   try {
     await DatabaseAuth.database;
@@ -37,7 +38,7 @@ class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
 
   final String title;
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

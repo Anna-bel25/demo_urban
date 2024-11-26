@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/visit_model.dart';
-import 'user_sesion_service.dart';
+import 'databse_service.dart';
 
 class VisitService {
   final String _baseUrl = 'http://192.168.100.8:3000/visit';
@@ -9,48 +9,55 @@ class VisitService {
 
   // Crear solicitud de visita
   Future<Map<String, dynamic>> registerVisitor(CreateVisitModel visitData) async {
-  final token = UserSessionService.getToken();
-  if (token == null) {
-    throw Exception('No se encontró el token');
-  }
+    final userData = await DatabaseAuth.getUser();
+    final cedulaVisitante = userData?['cedula'] ?? '';
+    final token = userData?['token'] ?? '';
 
-  final url = Uri.parse('$_baseUrl/post');
-  final headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer $token',
-  };
-
-  try {
-    final response = await http.post(
-      url,
-      headers: headers,
-      body: jsonEncode(visitData.toJson()),
-    );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final responseData = jsonDecode(response.body);
-      return {
-        'success': true,
-        'data': responseData,
-      };
-    } else {
-      throw Exception('Error al registrar la visita. Código: ${response.statusCode}');
+    if (cedulaVisitante.isEmpty || token.isEmpty) {
+      throw Exception('Cédula o token no disponibles');
     }
-  } catch (error) {
-    throw Exception('Error de conexión: $error');
+
+    final url = Uri.parse('$_baseUrl/post');
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: jsonEncode(visitData.toJson()),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = jsonDecode(response.body);
+        return {
+          'success': true,
+          'data': responseData,
+        };
+      } else {
+        throw Exception('Error al registrar la visita. Código: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Error de conexión: $error');
+    }
   }
-}
+
 
 
 
   // Obtener solicitudes de visita
   Future<List<CreateVisitModel>> getVisitRequests() async {
-    final token = UserSessionService.getToken();
-    if (token == null) {
-      throw Exception('No se encontró el token');
+    final userData = await DatabaseAuth.getUser ();
+    final cedulaVisitante = userData?['cedula'] ?? '';
+    final token = userData?['token'] ?? '';
+
+    if (cedulaVisitante.isEmpty || token.isEmpty) {
+        throw Exception('Cédula o token no disponibles');
     }
 
-    final url = Uri.parse('$_baseUrl/all');
+    final url = Uri.parse('$_baseUrl/all?cedula=$cedulaVisitante');
     final headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -58,16 +65,16 @@ class VisitService {
 
     try {
       final response = await http.get(url, headers: headers);
+
       if (response.statusCode == 200) {
-        final List<dynamic> responseData = jsonDecode(response.body);
-        print('Respuesta de la API: $responseData');
-        return responseData.map((item) => CreateVisitModel.fromJson(item)).toList();
+        final List<dynamic> jsonData = jsonDecode(response.body);
+        return jsonData.map((visit) => CreateVisitModel.fromJson(visit)).toList();
       } else {
-        throw Exception('Error al obtener solicitudes de visita');
+        throw Exception('Error al obtener las solicitudes de visita: ${response.body}');
       }
     } catch (error) {
-      print('Error al obtener solicitudes de visita: $error');
-      throw Exception('Hubo un error al obtener las solicitudes de visita');
+      print('Error al obtener las solicitudes de visita: $error');
+      throw Exception('Error al obtener las solicitudes de visita: $error');
     }
   }
 
