@@ -1,14 +1,16 @@
 import 'package:demo_urban/main.dart';
-import 'package:demo_urban/screens/resident_register_screen.dart';
-import 'package:demo_urban/screens/visit_register_screen.dart';
+import 'package:demo_urban/screens/resident/resident_register.dart';
+import 'package:demo_urban/screens/visit/visit_register.dart';
 import 'package:flutter/material.dart';
-import '../models/login_model.dart';
-import '../services/databse_service.dart';
-import '../services/user_service.dart';
-import 'register_screen.dart';
+import '../../models/login_model.dart';
+import '../../services/databse_service.dart';
+import '../../services/user_service.dart';
+import 'faceid_login.dart';
+import 'fingerprint_login.dart';
+import 'register.dart';
 
-class LoginForm extends StatelessWidget {
-  const LoginForm({super.key});
+class TraditionalLogin extends StatelessWidget {
+  const TraditionalLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class LoginForm extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const LoginPage(title: ' '),
+      home: const LoginPage(title: ''),
     );
   }
 }
@@ -128,26 +130,26 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        backgroundColor: Color.fromARGB(185, 218, 224, 232),
-        title: Text(widget.title),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const MyApp()),
-            );
-          },
-        ),
-      ),*/
+      // appBar: AppBar(
+      //   backgroundColor: Color.fromARGB(185, 218, 224, 232),
+      //   title: Text(widget.title),
+      //   centerTitle: true,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.arrow_back),
+      //     onPressed: () {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => const MyApp()),
+      //       );
+      //     },
+      //   ),
+      // ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage('https://images.unsplash.com/photo-1576502202167-791eca35a78d?q=80&w=1781&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+            image: NetworkImage('https://images.unsplash.com/photo-1533158326339-7f3cf2404354?q=80&w=1968&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
             fit: BoxFit.cover,
           ),
         ),
@@ -173,30 +175,66 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
   Widget _formulario() {
     return Column(
       children: [
         const SizedBox(height: 15),
         Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            // IconButton(
-            //   icon: const Icon(Icons.arrow_back),
-            //   onPressed: () => Navigator.pushReplacement(
-            //     context, MaterialPageRoute(builder: (context) => const LoginForm()),
-            //   ),
-            // ),
-            Text(widget.title),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
             IconButton(
-              icon: const Icon(Icons.home),
+              icon: const Icon(Icons.arrow_back),
+              tooltip: 'Volver',
               onPressed: () => Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => const MyApp()),
               ),
             ),
+            //Text(widget.title),
+            IconButton(
+              icon: const Icon(Icons.lock),
+              tooltip: 'Inicio de sesión con Contraseña',
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const TraditionalLogin()),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.fingerprint),
+              tooltip: 'Inicio de sesión con Huella Digital',
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const FingerprintLogin()),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.face),
+              tooltip: 'Inicio de sesión con Face ID',
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const FaceIDLogin()),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.person_add),
+              tooltip: 'Crear cuenta',
+              onPressed: () => Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const RegisterForm()),
+              ),
+            ),
           ],
+          // children: [
+          //   IconButton(
+          //     icon: const Icon(Icons.arrow_back),
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => const LoginForm()),
+          //       );
+          //     },
+          //   ),
+          // ],
         ),
+        const SizedBox(height: 80),
         const Text(
-          'Inicio de sesión',
+          'Iniciar sesión',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
@@ -260,15 +298,15 @@ class _LoginPageState extends State<LoginPage> {
           ),
           const SizedBox(height: 20),
 
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const RegisterForm()),
-              );
-            },
-            child: const Text('¿No tienes una cuenta? Regístrate aquí'),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const RegisterForm()),
+          //     );
+          //   },
+          //   child: const Text('¿No tienes una cuenta? Regístrate aquí'),
+          // ),
 
         ],
       ),

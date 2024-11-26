@@ -1,6 +1,8 @@
-import 'package:demo_urban/screens/login_screen.dart';
+import 'package:demo_urban/screens/login/tradicional_login.dart';
 import 'package:demo_urban/services/databse_service.dart';
 import 'package:flutter/material.dart';
+
+import 'screens/login/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -92,10 +94,25 @@ class MyHomePage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const LoginForm()),
+              MaterialPageRoute(builder: (context) => const TraditionalLogin()),
             );
           },
         child: const Text('Ir a Iniciar sesión'),
+        ),
+
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RegisterForm()),
+            );
+          },
+          child: const Text(
+            '¿No tienes una cuenta? Regístrate aquí',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          )
         ),
       ]
     );

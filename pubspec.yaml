@@ -31,6 +31,7 @@ dependencies:
   sqflite: ^2.0.0+4
   io: ^1.0.4
   image_picker: ^1.1.2
+  local_auth: ^2.3.0
   #sqflite_common_ffi: ^2.3.4+3
 
 dev_dependencies:

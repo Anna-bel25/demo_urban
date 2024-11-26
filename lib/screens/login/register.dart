@@ -1,9 +1,9 @@
-import 'package:demo_urban/screens/login_screen.dart';
+import 'package:demo_urban/screens/login/tradicional_login.dart';
 import 'package:demo_urban/services/user_service.dart';
 import 'package:flutter/material.dart';
 
-import '../main.dart';
-import '../models/register_model.dart';
+import '../../main.dart';
+import '../../models/register_model.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({super.key});
@@ -51,9 +51,11 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey  = GlobalKey<FormState>();
+  final UserService _fingerprintService = UserService(); 
   final ButtonStyle style = FilledButton.styleFrom(textStyle: const TextStyle(fontSize: 16));
   String numeroCedula = "", contrasena = "", nombre = "", apellido = "";
   String rol = "";
+  String tipoAutenticacion = '';
 
   String? validarFormulario(String? value, String campo) {
     if (value == null || value.isEmpty) return 'Este campo es requerido!';
@@ -99,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
         // Redirigir al login después del registro exitoso
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LoginForm()),
+          MaterialPageRoute(builder: (context) => const TraditionalLogin()),
         );
 
       } else {
@@ -173,14 +175,15 @@ class _RegisterPageState extends State<RegisterPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
             IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.account_circle),
+              tooltip: 'Volver',
               onPressed: () => Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => const LoginForm()),
+                context, MaterialPageRoute(builder: (context) => const TraditionalLogin()),
               ),
             ),
-            Text(widget.title),
             IconButton(
               icon: const Icon(Icons.home),
+              tooltip: 'Inicio',
               onPressed: () => Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => const MyApp()),
               ),
@@ -198,6 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
           //   ),
           // ],
         ),
+        const SizedBox(height: 50),
         const Text(
           'Registro',
           style: TextStyle(
@@ -223,6 +227,30 @@ class _RegisterPageState extends State<RegisterPage> {
         const SizedBox(height: 16),
 
 
+        // Tpo de autenticación
+        DropdownButtonFormField<String>(
+          decoration: const InputDecoration(
+            labelText: 'Tipo de Autenticación',
+            icon: Icon(Icons.security),
+            border: OutlineInputBorder(),
+          ),
+          value: tipoAutenticacion.isEmpty ? null : tipoAutenticacion,
+          isExpanded: false,
+          items: const [
+            DropdownMenuItem(value: "Contraseña", child: Text("Contraseña")),
+            DropdownMenuItem(value: "Huella Digital", child: Text("Huella Digital")),
+            DropdownMenuItem(value: "Face ID", child: Text("Face ID")),
+          ],
+          onChanged: (String? newValue) {
+            setState(() {
+              tipoAutenticacion = newValue ?? "";
+            });
+          },
+          validator: (value) => validarFormulario(value, 'tipoAutenticacion'),
+        ),
+
+        const SizedBox(height: 16),
+        if (tipoAutenticacion == "Contraseña")
         TextFormField(
           obscureText: true,
           decoration: const InputDecoration(
@@ -235,6 +263,35 @@ class _RegisterPageState extends State<RegisterPage> {
             contrasena = value ?? '';
           },
         ),
+        if (tipoAutenticacion == "Huella Digital")
+        ElevatedButton(
+          onPressed: () async {
+            await _fingerprintService.authenticateFingerprint(); 
+            print("Iniciar autenticación con huella digital");
+          },
+          child: const Text("Autenticación por Huella Digital"),
+        ),
+        if (tipoAutenticacion == "Face ID")
+        ElevatedButton(
+          onPressed: () {
+            print("Iniciar autenticación con Face ID");
+          },
+          child: const Text("Autenticación por Face ID"),
+        ),
+
+
+        // TextFormField(
+        //   obscureText: true,
+        //   decoration: const InputDecoration(
+        //     labelText: 'Contraseña',
+        //     hintText: 'Ingrese su contraseña',
+        //     icon: Icon(Icons.password_outlined),
+        //   ),
+        //   validator: (value) => validarFormulario(value, 'contrasena'),
+        //   onSaved: (String? value) {
+        //     contrasena = value ?? '';
+        //   },
+        // ),
         const SizedBox(height: 16),
 
 

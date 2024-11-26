@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../main.dart';
-import '../models/resident_model.dart';
-import '../services/resident_service.dart';
-import 'resident_register_screen.dart';
+import '../../main.dart';
+import '../../models/resident_model.dart';
+import '../../services/resident_service.dart';
+import 'resident_register.dart';
 
 
 class ResidentViewScreen extends StatelessWidget {
@@ -55,6 +55,7 @@ class _ResidentViewPageState extends State<ResidentViewPage> {
           children: [
             IconButton(
               icon: const Icon(Icons.arrow_back),
+              tooltip: 'Volver',
               onPressed: () => Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => const ResidentRegisterScreen()),
               ),
@@ -62,6 +63,7 @@ class _ResidentViewPageState extends State<ResidentViewPage> {
             Text(widget.title),
             IconButton(
               icon: const Icon(Icons.exit_to_app),
+              tooltip: 'Salir',
               onPressed: () => Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => const MyApp()),
               ),

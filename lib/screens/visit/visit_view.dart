@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../main.dart';
-import '../models/visit_model.dart';
-import '../services/visit_service.dart';
-import 'visit_register_screen.dart';
+import '../../main.dart';
+import '../../models/visit_model.dart';
+import '../../services/visit_service.dart';
+import 'visit_register.dart';
 
 
 class VisitViewScreen extends StatelessWidget {
@@ -56,6 +56,7 @@ class _VisitViewPageState extends State<VisitViewPage> {
           children: [
             IconButton(
               icon: const Icon(Icons.arrow_back),
+              tooltip: 'Volver',
               onPressed: () => Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => const VisitRegisterScreen()),
               ),
@@ -63,6 +64,7 @@ class _VisitViewPageState extends State<VisitViewPage> {
             Text(widget.title),
             IconButton(
               icon: const Icon(Icons.exit_to_app),
+              tooltip: 'Salir',
               onPressed: () => Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => const MyApp()),
               ),

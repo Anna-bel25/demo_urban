@@ -54,6 +54,11 @@ class DatabaseAuth {
     return null;
   }
 
+  static Future<bool> isLoggedIn() async {
+    final user = await getUser();
+    return user != null && user['token']?.isNotEmpty == true;
+  }
+
 
   static Future<void> deleteUserDatabase() async {
     String path = join(await getDatabasesPath(), 'auth_data.db');
