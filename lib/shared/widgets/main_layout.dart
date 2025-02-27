@@ -100,9 +100,14 @@ class HomeLayoutWidgetState extends State<HomeLayoutWidget> {
 
     return Scaffold(
       key: scaffoldKey,
-      drawerEnableOpenDragGesture: false,
-      drawer: MenuOptionsPage(
-        scaffoldKey: scaffoldKey,
+      drawerEnableOpenDragGesture: true,
+      // drawer: MenuOptionsPage(
+      //   scaffoldKey: scaffoldKey,
+      // ),
+      endDrawer: Drawer(
+        child: MenuOptionsPage(
+          scaffoldKey: scaffoldKey,
+        ),
       ),
       backgroundColor: AppTheme.backgroundHome,
       body: MediaQuery.withNoTextScaling(
@@ -202,29 +207,31 @@ class HomeLayoutWidgetState extends State<HomeLayoutWidget> {
                                 elevation: 0,
                                 centerTitle: true,
                                 leadingWidth: size.width * 0.70,
-                                leading: Row(
-                                  //mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    SizedBox(width: size.width * 0.018),
-                                    Text(
-                                      'Factura:',
-                                      style: TextStyle(
-                                        color: config.secondaryColor,
-                                        fontSize: responsive.dp(1.5),
-                                        fontWeight: FontWeight.bold,
+                                leading: Padding(
+                                      padding: EdgeInsets.only(left: 30),
+                                      child: Column( 
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [ 
+                                          Text(
+                                            'Factura:',
+                                            style: TextStyle(
+                                              color: config.secondaryColor,
+                                              fontSize: responsive.dp(1.5),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            '006-854-655521000',
+                                            style: TextStyle(
+                                              color: config.secondaryColor,
+                                              fontSize: responsive.dp(1.5),
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    SizedBox(width: size.width * 0.011),
-                                    Text(
-                                      '006-854-655521000',
-                                      style: TextStyle(
-                                        color: config.secondaryColor,
-                                        fontSize: responsive.dp(1.5),
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                                 actions: [
                                   SizedBox(width: size.width * 0.018),
                                   Row(
@@ -279,7 +286,7 @@ class HomeLayoutWidgetState extends State<HomeLayoutWidget> {
                                               IconButton(
                                                 onPressed: () {
                                                   scaffoldKey.currentState
-                                                      ?.openDrawer();
+                                                      ?.openEndDrawer();
                                                 },
                                                 icon: Icon(
                                                   size: responsive.dp(2.5),
