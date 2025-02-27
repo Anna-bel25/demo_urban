@@ -10,7 +10,7 @@ class CardProduct extends StatelessWidget {
     Key? key,
     required this.title,
     required this.onTap,
-    this.size = 50,
+    //this.size = 50,
     this.padding,
     this.borderRadius = 10,
     this.elevation = 3,
@@ -22,7 +22,7 @@ class CardProduct extends StatelessWidget {
 
   final String title;
   final VoidCallback onTap;
-  final double size;
+  //final double size;
   final double? padding;
   final double borderRadius;
   final double elevation;
@@ -38,7 +38,7 @@ class CardProduct extends StatelessWidget {
     final config = EnvironmentCompany().config!;
 
     return Padding(
-      padding: EdgeInsets.all(padding ?? 20),
+      padding: EdgeInsets.all(padding ?? 2),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
@@ -47,34 +47,57 @@ class CardProduct extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
             color: Theme.of(context).primaryColor.withOpacity(0.5),
-            image: imagePath != null
-                ? DecorationImage(
-                  image: NetworkImage(imagePath!),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.5),
-                    BlendMode.darken,
-                  ),
-            ) : null,
+            // image: imagePath != null
+            //     ? DecorationImage(
+            //       image: NetworkImage(imagePath!),
+            //       fit: BoxFit.cover,
+            //       colorFilter: ColorFilter.mode(
+            //         Colors.black.withOpacity(0.5),
+            //         BlendMode.darken,
+            //       ),
+            // ) : null,
           ),
           child: ClipRRect( 
             borderRadius: BorderRadius.circular(borderRadius),
             child: Stack( 
               children: [ 
+                if(imagePath != null)
+                Container( 
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    image: DecorationImage( 
+                      image: NetworkImage(imagePath!),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode( 
+                        Colors.black.withOpacity(0.5),
+                        BlendMode.darken,
+                      ),
+                    ),
+                  ),
+                ),
+                if(imagePath == null)
+                Center( 
+                  child: SvgPicture.asset( 
+                    AppTheme.iconNotFoundImagePath,
+                    width: size.width * 0.2,
+                    height: responsive.isTablet ? responsive.dp(12) : responsive.dp(10),
+                  ),
+                ),
                 Container( 
                   decoration: BoxDecoration( 
                     borderRadius: BorderRadius.circular(borderRadius),
-                    color: Theme.of(context).primaryColor.withOpacity(0.7),
+                    color: AppTheme.colorCardCategory.withOpacity(0.8),
                   ),
                 ),
                 Center( 
                   child: Padding( 
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(8),
                     child: Container(
                       alignment: Alignment.center,
+                      width: double.infinity,
                       child: Text( 
-                        horario?.materiaNombre ?? '',
-                        //Ññtitle,
+                        horario?.materiaNombre ?? ''.toUpperCase(),
+                        textAlign: TextAlign.center,
                         style: TextStyle( 
                           color: AppTheme.white,
                           fontSize: responsive.dp(1.5),
