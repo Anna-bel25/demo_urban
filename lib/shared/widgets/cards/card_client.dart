@@ -145,25 +145,79 @@ class CustomListTile extends StatelessWidget {
       subtitle: Column( 
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [ 
-          if(subtitle != null)
-          Text(
-            "${subtitlePrefix ?? ''} $subtitle",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppTheme.primaryColor,
-              fontSize: responsive.dp(1.2),
-            ),
+          Row( 
+            children: [ 
+              if(subtitle != null)
+              RichText(
+                text: TextSpan( 
+                  children: [ 
+                    TextSpan( 
+                      text: "${subtitlePrefix ?? ''} ",
+                      style: TextStyle(
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w800,
+                        fontSize: responsive.dp(1.2),
+                      ),
+                    ),
+                    TextSpan( 
+                      text: subtitle,
+                      style: TextStyle(
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: responsive.dp(1.2),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+            ],
           ),
+          // if(subtitle != null)
+          // Text(
+          //   "${subtitlePrefix ?? ''} $subtitle",
+          //   style: TextStyle(
+          //     fontWeight: FontWeight.bold,
+          //     color: AppTheme.primaryColor,
+          //     fontSize: responsive.dp(1.2),
+          //   ),
+          // ),
           ...subtitles!.map((subtitle) {
             final key = subtitle.keys.first;
             final value = subtitle[key];
-            return Text( 
-              "$key: $value",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppTheme.primaryColor,
-                fontSize: responsive.dp(1.2),
-              ),
+            return Row(
+              children: [
+                RichText(
+                  text: TextSpan( 
+                    children: [ 
+                      TextSpan( 
+                        text: "$key:",
+                        style: TextStyle(
+                          color: AppTheme.primaryColor,
+                          fontWeight: FontWeight.w800,
+                          fontSize: responsive.dp(1.2),
+                        ),
+                      ),
+                      TextSpan( 
+                        text: "$value",
+                        style: TextStyle(
+                          color: AppTheme.primaryColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: responsive.dp(1.2),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Text( 
+                //   "$key: $value",
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     color: AppTheme.primaryColor,
+                //     fontSize: responsive.dp(1.2),
+                //   ),
+                // ),
+              ],
             );
           }).toList(),
         ],
