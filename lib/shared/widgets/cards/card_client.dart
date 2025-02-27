@@ -163,7 +163,7 @@ class CustomListTile extends StatelessWidget {
                       text: subtitle,
                       style: TextStyle(
                         color: AppTheme.primaryColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         fontSize: responsive.dp(1.2),
                       ),
                     ),
@@ -202,7 +202,7 @@ class CustomListTile extends StatelessWidget {
                         text: "$value",
                         style: TextStyle(
                           color: AppTheme.primaryColor,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           fontSize: responsive.dp(1.2),
                         ),
                       ),
