@@ -101,9 +101,6 @@ class HomeLayoutWidgetState extends State<HomeLayoutWidget> {
     return Scaffold(
       key: scaffoldKey,
       drawerEnableOpenDragGesture: true,
-      // drawer: MenuOptionsPage(
-      //   scaffoldKey: scaffoldKey,
-      // ),
       endDrawer: Drawer(
         child: MenuOptionsPage(
           scaffoldKey: scaffoldKey,
@@ -136,6 +133,7 @@ class HomeLayoutWidgetState extends State<HomeLayoutWidget> {
                                 pinned: true,
                                 //leading: Container(),
                                 automaticallyImplyLeading: false,
+                                toolbarHeight: 0, 
                                 flexibleSpace: FlexibleSpaceBar(
                                   background: Container(
                                     color: AppTheme.backgroundHome,
@@ -199,6 +197,7 @@ class HomeLayoutWidgetState extends State<HomeLayoutWidget> {
                                 : const AlwaysScrollableScrollPhysics(),
                             slivers: [
                               SliverAppBar(
+                                automaticallyImplyLeading: false,
                                 floating: true,
                                 pinned: true,
                                 snap: false,
