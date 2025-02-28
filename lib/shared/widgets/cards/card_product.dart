@@ -38,7 +38,7 @@ class CardProduct extends StatelessWidget {
     final config = EnvironmentCompany().config!;
 
     return Padding(
-      padding: EdgeInsets.all(padding ?? 2),
+      padding: EdgeInsets.all(padding ?? 1),
       child: GestureDetector(
         onTap: onTap,
         child: Container(

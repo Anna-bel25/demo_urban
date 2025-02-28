@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -185,13 +185,14 @@ class _HomePageState extends State<HomePage> {
                     fontSize: responsive.dp(1.7)
                   ),
                 ),
-                SizedBox(height: size.height * 0.02),
+                SizedBox(height: size.height * 0.01),
                 _homeResponse != null
                     ? _homeResponse!.horarios!.isNotEmpty
                         //AGREGAR EL KEY
                         ? Column(
                             children: [
                               GridView.builder(
+                                padding: EdgeInsets.only(top: 5, bottom: 5),
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -224,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                           ))
                     // : skeleatonSchedules()
                     : _skeletonTabs(),
-                SizedBox(height: size.height * 0.02),
+                SizedBox(height: size.height * 0.01),
                 // SizedBox(
                 //   key:keyhomeActividades, 
                 //   child: title(
