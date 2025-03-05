@@ -309,7 +309,7 @@ class _HomePageState extends State<HomePage> {
                                                 ? students[positionStudent].grado!
                                                 : '',
                                             style: TextStyle(
-                                                color: config.secondaryColor,
+                                                color: config.primaryColor,
                                                 fontSize: responsive.dp(1.2),
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -363,7 +363,7 @@ class _HomePageState extends State<HomePage> {
                                                             icon: Icon(
                                                               size: responsive.dp(1.5),
                                                               Icons.business_rounded,
-                                                              color: config.secondaryColor,
+                                                              color: config.primaryColor,
                                                             ),
                                                           ),
                                                         ),
@@ -405,7 +405,7 @@ class _HomePageState extends State<HomePage> {
                                                 Text(
                                                   'Factura:',
                                                   style: TextStyle(
-                                                    color: config.secondaryColor,
+                                                    color: config.primaryColor,
                                                     fontSize: responsive.dp(1.2),
                                                     fontWeight: FontWeight.w700,
                                                   ),
@@ -413,7 +413,7 @@ class _HomePageState extends State<HomePage> {
                                                 Text(
                                                   '006-854-655521000',
                                                   style: TextStyle(
-                                                    color: config.secondaryColor,
+                                                    color: config.primaryColor,
                                                     fontSize: responsive.dp(1.2),
                                                     fontWeight: FontWeight.w700,
                                                   ),
@@ -438,7 +438,7 @@ class _HomePageState extends State<HomePage> {
                                                     ));
                                               },
                                               icon: Icons.search,
-                                              color: config.secondaryColor,
+                                              color: config.primaryColor,
                                               size: responsive.dp(2.5),
                                               iconSize: responsive.dp(1.2),
                                             ),
@@ -446,7 +446,7 @@ class _HomePageState extends State<HomePage> {
                                             CardIconButton(
                                               onTap: () {},
                                               icon: Icons.percent_rounded,
-                                              color: config.secondaryColor,
+                                              color: config.primaryColor,
                                               size: responsive.dp(2.5),
                                               iconSize: responsive.dp(1.2),
                                             ),
@@ -454,7 +454,7 @@ class _HomePageState extends State<HomePage> {
                                             CardIconButton(
                                               onTap: () {},
                                               icon: Icons.keyboard,
-                                              color: config.secondaryColor,
+                                              color: config.primaryColor,
                                               size: responsive.dp(2.5),
                                               iconSize: responsive.dp(1.2),
                                             ),
@@ -462,7 +462,7 @@ class _HomePageState extends State<HomePage> {
                                             CardIconButton(
                                               onTap: () {},
                                               icon: Icons.person_add_alt_outlined,
-                                              color: config.secondaryColor,
+                                              color: config.primaryColor,
                                               size: responsive.dp(2.5),
                                               iconSize: responsive.dp(1.2),
                                             ),
@@ -470,7 +470,7 @@ class _HomePageState extends State<HomePage> {
                                             CardIconButton(
                                               onTap: () {},
                                               icon: Icons.groups_outlined,
-                                              color: config.secondaryColor,
+                                              color: config.primaryColor,
                                               size: responsive.dp(2.5),
                                               iconSize: responsive.dp(1.2),
                                             ),
@@ -478,7 +478,7 @@ class _HomePageState extends State<HomePage> {
                                             CardIconButton(
                                               onTap: () {},
                                               icon: Icons.delete_forever_rounded,
-                                              color: config.secondaryColor,
+                                              color: config.primaryColor,
                                               size: responsive.dp(2.5),
                                               iconSize: responsive.dp(1.2),
                                             ),
