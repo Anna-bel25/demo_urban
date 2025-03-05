@@ -9,14 +9,12 @@ class CardIconButton extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
   final double size;
-  final double padding;
+  final double? padding;
   final double borderRadius;
   final double elevation;
   final double iconSize;
-  final double iconPadding;
-  final double iconBorderRadius;
-  final double iconElevation;
-  final double iconSizePadding;
+  final double cardWidth;
+  final double cardHeight;
   // final Clase scheduleclass;
   // final List<Horario> horario;
 
@@ -26,14 +24,12 @@ class CardIconButton extends StatelessWidget {
     required this.color,
     required this.onTap,
     this.size = 50,
-    this.padding = 10,
+    this.padding,
     this.borderRadius = 10,
     this.elevation = 3,
     required this.iconSize,
-    this.iconPadding = 10,
-    this.iconBorderRadius = 10,
-    this.iconElevation = 3,
-    this.iconSizePadding = 10,
+    this.cardWidth = 60,
+    this.cardHeight = 60,
     // required this.scheduleclass,
     // required this.horario,
   }) : super(key: key);
@@ -44,24 +40,29 @@ class CardIconButton extends StatelessWidget {
     final zise = MediaQuery.of(context).size;
     final responsive = Responsive(context);
 
-    return Card(
-      borderOnForeground: true,
-      color: AppTheme.white,
-      surfaceTintColor: AppTheme.white,
-      elevation: 2,
-      shadowColor: AppTheme.black,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      child: IconButton(
-        iconSize: iconSize,
-        icon: Icon(
-          icon,
-          size: size,
-          color: color,
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Card(
+        borderOnForeground: true,
+        color: AppTheme.white,
+        surfaceTintColor: AppTheme.white,
+        elevation: 2,
+        shadowColor: AppTheme.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
-        onPressed: onTap,
+        child: IconButton(
+          padding: EdgeInsets.only(left: 12, right: 12, ),
+            iconSize: iconSize,
+            icon: Icon(
+              icon,
+              size: size,
+              color: color,
+            ),
+            onPressed: onTap,
+          ),
       ),
     );
+    
   }
 }
