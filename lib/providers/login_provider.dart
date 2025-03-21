@@ -66,7 +66,8 @@ class LoginProvider extends ChangeNotifier {
       print("Datos para el login con biometría: $body");
       
       final response = await http.post(
-        Uri.parse('http://192.168.100.8:3000/user/login'),
+        Uri.parse('http://localhost:3000/user/login'),
+        // Uri.parse('http://192.168.100.8:3000/user/login'),
         headers: {'Content-Type': 'application/json'},
         body: body,
       );
@@ -127,7 +128,7 @@ class LoginProvider extends ChangeNotifier {
 
 
   // Enviar solicitud de inicio de sesión tradicional
-  Future<void> loginUser (BuildContext context) async {
+  Future<void> loginUser(BuildContext context) async {
     if (loginFormKey.currentState?.validate() ?? false) {
       _isLoading = true;
       notifyListeners();
@@ -142,7 +143,8 @@ class LoginProvider extends ChangeNotifier {
 
       try {
         final response = await http.post(
-          Uri.parse('http://192.168.100.8:3000/user/login'),
+          Uri.parse('http://localhost:3000/user/login'),
+          // Uri.parse('http://192.168.100.8:3000/user/login'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(loginDto),
         );
@@ -157,7 +159,7 @@ class LoginProvider extends ChangeNotifier {
           userRole = responseData['rol'];
           manzanaVilla = responseData['manzanaVilla'] ?? '';
           numeroCedula = numeroCedulaController.text;
-          numeroCedula = responseData['numeroCedula']; 
+          numeroCedula = responseData['numeroCedula'];
 
           await DatabaseHelper.saveUser(token, nombre, apellido, userRole, manzanaVilla, numeroCedulaController.text);
           final visitProvider = Provider.of<VisitProvider>(context, listen: false);
@@ -187,6 +189,10 @@ class LoginProvider extends ChangeNotifier {
             context,
             MaterialPageRoute(builder: (context) => ResidentRegisterScreen()),
           );
+        } else if (response.statusCode == 401) {
+          // Manejar el caso en que el usuario no existe o las credenciales son inválidas
+          final responseData = json.decode(response.body);
+          showCenteredDialog(context, responseData['message'] ?? 'El usuario no existe o las credenciales son inválidas.');
         } else {
           showCenteredDialog(context, "Error al autenticar al usuario.");
         }

@@ -80,7 +80,8 @@ class RegisterProvider extends ChangeNotifier {
 
       try {
         final response = await http.post(
-          Uri.parse('http://192.168.100.8:3000/user/register'),
+          Uri.parse('http://localhost:3000/user/register'),
+          // Uri.parse('http://192.168.100.8:3000/user/register'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(createUserDto),
         );

@@ -71,7 +71,8 @@ class VisitProvider extends ChangeNotifier {
         return;
       }
 
-      const String url = 'http://192.168.100.8:3000/visit/solicitudes';
+      const String url = 'http://localhost:3000/visit/solicitudes';
+      // const String url = 'http://192.168.100.8:3000/visit/solicitudes';
       final request = http.MultipartRequest('POST', Uri.parse(url))
         ..headers['Authorization'] = 'Bearer $token';
 
@@ -137,7 +138,8 @@ class VisitProvider extends ChangeNotifier {
     final userData = await DatabaseHelper.getUser();
     final token = userData?['token'] ?? '';
     final numeroCedulaVisitante = userData?['numeroCedula'] ?? '';
-    final String url = 'http://192.168.100.8:3000/visit/solicitudes-registros/$numeroCedulaVisitante';
+    final String url = 'http://localhost:3000/visit/solicitudes-registros/$numeroCedulaVisitante';
+    // final String url = 'http://192.168.100.8:3000/visit/solicitudes-registros/$numeroCedulaVisitante';
 
     try {
       final response = await http.get(
@@ -184,7 +186,8 @@ class VisitProvider extends ChangeNotifier {
   Future<void> updateSolicitudVisita(BuildContext context, int id) async {
     final userData = await DatabaseHelper.getUser ();
     final token = userData?['token'] ?? '';
-    String url = 'http://192.168.100.8:3000/visit/solicitudes/$id';
+    String url = 'http://localhost:3000/visit/solicitudes/$id';
+    // String url = 'http://192.168.100.8:3000/visit/solicitudes/$id';
     final request = http.MultipartRequest('PATCH', Uri.parse(url))
       ..headers['Authorization'] = 'Bearer $token';
     print('Actualizando registro de visita con los siguientes datos:');
@@ -249,7 +252,8 @@ class VisitProvider extends ChangeNotifier {
   Future<void> deleteSolicitudVisita(BuildContext context, int id) async {
     final userData = await DatabaseHelper.getUser ();
     final token = userData?['token'] ?? '';
-    String url = 'http://192.168.100.8:3000/visit/solicitudes/$id';
+    String url = 'http://localhost:3000/visit/solicitudes/$id';
+    // String url = 'http://192.168.100.8:3000/visit/solicitudes/$id';
     
     try {
       final response = await http.delete(

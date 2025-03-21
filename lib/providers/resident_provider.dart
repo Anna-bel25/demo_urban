@@ -60,7 +60,8 @@ class ResidentProvider extends ChangeNotifier {
     final numeroCedulaResidente = userData?['numeroCedula'] ?? '';
 
     if (residentFormKey.currentState?.validate() ?? false) {
-      final String url = 'http://192.168.100.8:3000/resident/registro-visita/$numeroCedulaResidente';
+      final String url = 'http://localhost:3000/resident/registro-visita/$numeroCedulaResidente';
+      // final String url = 'http://192.168.100.8:3000/resident/registro-visita/$numeroCedulaResidente';
       
       try {
         final registroDto = {
@@ -114,7 +115,8 @@ class ResidentProvider extends ChangeNotifier {
     final userData = await DatabaseHelper.getUser();
     final token = userData?['token'] ?? '';
     final numeroCedulaResidente = userData?['numeroCedula'] ?? '';
-    final String url = 'http://192.168.100.8:3000/resident/solicitudes-visita/$numeroCedulaResidente';
+    final String url = 'http://localhost:3000/resident/solicitudes-visita/$numeroCedulaResidente';
+    // final String url = 'http://192.168.100.8:3000/resident/solicitudes-visita/$numeroCedulaResidente';
 
     try {
       final response = await http.get(
@@ -161,7 +163,8 @@ class ResidentProvider extends ChangeNotifier {
   Future<void> approveRejectSolicitud(BuildContext context, int id, String estadoSolicitud) async {
     final userData = await DatabaseHelper.getUser();
     final token = userData?['token'] ?? '';
-    final String url = 'http://192.168.100.8:3000/resident/solicitudes-visita/$id/approve-reject';
+    final String url = 'http://localhost:3000/resident/solicitudes-visita/$id/approve-reject';
+    // final String url = 'http://192.168.100.8:3000/resident/solicitudes-visita/$id/approve-reject';
     final Map<String, dynamic> approvalData = {
       'estadoSolicitud': estadoSolicitud,
     };
@@ -199,7 +202,8 @@ class ResidentProvider extends ChangeNotifier {
   Future<void> updateRegistroVisita(BuildContext context, int id) async {
     final userData = await DatabaseHelper.getUser ();
     final token = userData?['token'] ?? '';
-    final String url = 'http://192.168.100.8:3000/resident/registro-visita/$id';
+    final String url = 'http://localhost:3000/resident/registro-visita/$id';
+    // final String url = 'http://192.168.100.8:3000/resident/registro-visita/$id';
     final Map<String, dynamic> updateData = {};
 
     print('Actualizando registro de visita con los siguientes datos:');
@@ -256,7 +260,8 @@ class ResidentProvider extends ChangeNotifier {
   Future<void> deleteRegistroVisita(BuildContext context, int id) async {
     final userData = await DatabaseHelper.getUser();
     final token = userData?['token'] ?? '';
-    final String url = 'http://192.168.100.8:3000/resident/registro-visita/$id';
+    final String url = 'http://localhost:3000/resident/registro-visita/$id';
+    // final String url = 'http://192.168.100.8:3000/resident/registro-visita/$id';
 
     try {
       final response = await http.delete(
